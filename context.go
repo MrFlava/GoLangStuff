@@ -5,13 +5,15 @@ import (
 	"time"
 	"net/http"
 	"io/ioutil"
+	"context"
 )
 
 func main(){
-	timeoutContext, cancel := context.WithTimeout(context.Background(), time.Millisecond * 100)
+	timeoutContext, cancel := context.WithTimeout(context.Background(), time.Millisecond * 20000)
+	defer cancel()
 
 	// create HTTP request
-	req, err := http.NewRequestWithContext(http.MethodGet, "http://placehold.it/2000x2000", nil)
+	req, err := http.NewRequestWithContext(timeoutContext, http.MethodGet, "http://placehold.it/2000x2000", nil)
 	if err != nil {
 		panic(err)
 	}

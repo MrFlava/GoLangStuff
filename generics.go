@@ -2,11 +2,19 @@ package main
 
 import "fmt"
 
-func Add[T int | float64](a T, b T) T {
+type UserID int
+
+type Num interface {
+	~int | ~int8 | ~int16 | ~float32 | ~float64
+}
+
+func Add[T Num](a T, b T) T {
 	return a + b
 }
 
 func main() {
-	result := Add(1.1, 21)
+	a := UserID(1)
+	b := UserID(2)
+	result := Add(a, b)
 	fmt.Printf("result: %v\n", result)
 }

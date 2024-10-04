@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 )
 
 type User struct {
@@ -11,6 +12,8 @@ type User struct {
 }
 
 var userChahe = make(map[int]User)
+
+var chacheMutex sync.RWMutex
 
 func handleRoot(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello World")
@@ -36,7 +39,9 @@ func createUser(
 		return
 	}
 
+	chacheMutex.Lock()
 	userChahe[len(userChahe)+1] = user
+	chacheMutex.Unlock()
 
 	w.WriteHeader(http.StatusNoContent)
 }
